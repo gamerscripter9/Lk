@@ -4066,39 +4066,3 @@ Content:Input({   -- or :TextInput if your WindUI fork prefers that name
     end
 
 })
-
---// ===============================
---// INSTANT LETHAL TAB
---// ===============================
-
-local InstantLethalTab = Window:Tab({
-    Title = "Instant Lethal",
-    Icon = "arrowleft",  
-})
-
-local InstantLethalLoaded = false
-
-InstantLethalTab:Toggle({
-    Title = "Instant Lethal",
-    Desc = "Loads external Instant Lethal script (one-time load)",
-    Value = false,
-    Callback = function(state)
-        if state and not InstantLethalLoaded then
-            InstantLethalLoaded = true
-            
-            local success, err = pcall(function()
-                loadstring(game:HttpGet("https://pastebin.com/raw/g9fRtRiv"))()
-            end)
-            
-            if success then
-                print("[Corex Hub] Instant Lethal → Loaded successfully")
-            else
-                warn("[Corex Hub] Instant Lethal load failed: " .. tostring(err))
-                InstantLethalLoaded = false  -- allow retry if failed
-            end
-        elseif not state then
-            -- Most external scripts can't cleanly unload
-            print("[Corex Hub] Instant Lethal toggled off (may persist until rejoin)")
-        end
-    end,
-})
